@@ -1,0 +1,16 @@
+{
+    "version": "1.0",
+    "configurations": [
+        {
+            "name": "wtm",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/backend/wtm.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            }
+        },
+    ]
+}
