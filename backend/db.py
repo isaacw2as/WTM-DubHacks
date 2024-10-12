@@ -36,8 +36,20 @@ def register_new_user(username: str, password: str, interest_ids: list):
     
   except Exception as e:
     print(e)
-    
 
+def login(username, password):
+  try:
+    users_collection = db.get_collection("USERS")
+    res = users_collection.find_one({"username": username})
+    if res == None:
+      return False
+    
+    return res['password'] == password
+    
+  except Exception as e:
+    print(e)
+  
+  return False
 
 if __name__ == "__main__":
-  print(user_exists("username1"))
+  print(login("username1", "password1"))
