@@ -51,5 +51,18 @@ def login(username, password):
   
   return False
 
+def add_friend(my_username, friends_username):
+  try:
+    users_collection = db.get_collection("USERS")
+    res = users_collection.find_one_and_update({ "username": my_username }, {"$push": {"friends": friends_username}})
+
+    return res != None
+
+  except Exception as e:
+    print(e)
+  
+  return False
+  
+
 if __name__ == "__main__":
-  print(login("username1", "password1"))
+  print(add_friend("username0", "username1"))
