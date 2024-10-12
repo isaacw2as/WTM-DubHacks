@@ -8,6 +8,9 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.11"
 pymongo = "^4.10.1"
+flask = "^3.0.3"
+flask-restful = "^0.3.10"
+flask-cors = "^5.0.0"
 
 
 [build-system]
