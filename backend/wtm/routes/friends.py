@@ -18,3 +18,13 @@ def add_friend():
     db_client.add_friend(username, friend_username)
     db_client.add_friend(friend_username, username)
     return responses.success()
+
+@friends.route("/get", methods=["GET"])
+def get_friends_list():
+    username = request.args.get("username")
+    friends_list = db_client.get_friends(username)
+    friends_dict = {
+        "username": username,
+        "friends": friends_list
+    }
+    return responses.json_data(friends_dict)
