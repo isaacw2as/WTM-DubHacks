@@ -5,7 +5,7 @@
             "name": "wtm",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/backend/wtm.py",
+            "program": "${workspaceFolder}/backend/wtm/app.py",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}",
             "env": {
