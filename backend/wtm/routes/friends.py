@@ -23,6 +23,7 @@ def get_friends_list():
     payload = deserialize_request_body(request)
     username = payload["username"]
     friends_list = db_client.get_friends(username)
+    if friends_list is None: friends_list = []
     friends_dict = {
         "username": username,
         "friends": friends_list

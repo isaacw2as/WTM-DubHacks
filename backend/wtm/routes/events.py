@@ -1,4 +1,5 @@
 from flask import Blueprint, request
+from datetime import datetime
 from backend.wtm.db import DatabaseClient
 from backend.wtm.util import Responses, deserialize_request_body
 
@@ -15,13 +16,15 @@ def create_event():
     username = payload["username"]
     event_name = payload["event_name"]
     location = payload["location"]
-    datetimestamp = payload["time"]
+    start_timestamp = payload["start_timestamp"]
+    end_timestamp = payload["end_timestamp"]
     description = payload["description"]
-    associated_interests = payload["associated_interests"]
+    associated_interests = payload["interests"]
     db_client.register_event_under_user(eid=eid,
                                         name=event_name,
                                         loc=location,
-                                        datetimestamp=datetimestamp,
+                                        start_timestamp=start_timestamp,
+                                        end_timestamp=end_timestamp,
                                         description=description,
                                         associated_interests=associated_interests,
                                         organizer_username=username,
@@ -36,7 +39,8 @@ def show_event():
     relevant_info = {
         "name": event_info["name"],
         "location": event_info["loc"],
-        "time": event_info["time"],
+        "start_timestamp": event_info["start_timestamp"],
+        "end_timestamp": event_info["end_timestamp"],
         "description": event_info["description"],
         "associated_posts": event_info["associated_posts"],
         "organizer_username": event_info["organizer_username"]

@@ -168,19 +168,22 @@ class DatabaseClient:
     try:
       events_collection = self.db.get_collection("EVENTS")
       res = events_collection.find().sort({"eid": -1}).limit(1)
+      res = res.to_list()
 
-      if res == None:
+      if not res:
         logger.error("DB: No events in DB")
-        return 
+        return -1
       
       return res[0]['eid']
       
     except Exception as e:
       logger.error(f"Error in finding largest eid: {e}")
     
-    return 0
+    return -1
 
-  def register_event_under_user(self, eid, name, loc, datetimestamp, description: dict, associated_interests: list, organizer_username):
+  def register_event_under_user(self, eid, name, loc, 
+                                start_timestamp, end_timestamp, 
+                                description: dict, associated_interests: list, organizer_username):
     try:
       users_collection = self.db.get_collection("USERS")
       res = users_collection.find_one_and_update({"username": organizer_username}, {"$push": {"pendingEids": eid}})
@@ -194,7 +197,8 @@ class DatabaseClient:
           "eid": eid,
           "name": name,
           "loc": loc,
-          "time": datetimestamp,
+          "start_timestamp": start_timestamp,
+          "end_timestamp": end_timestamp,
           "description": description,
           "interests": associated_interests,
           "associated_posts": [],  # new event, no posts under it
@@ -277,17 +281,18 @@ class DatabaseClient:
     try:
       events_collection = self.db.get_collection("POSTS")
       res = events_collection.find().sort({"pid": -1}).limit(1)
+      res = res.to_list()
 
-      if res == None:
+      if not res:
         logger.error("DB: No events in DB")
-        return 
+        return -1
       
       return res[0]['pid']
       
     except Exception as e:
       logger.error(f"Error in finding largest eid: {e}")
     
-    return 0
+    return -1
 
 if __name__ == "__main__":
   d = DatabaseClient()
