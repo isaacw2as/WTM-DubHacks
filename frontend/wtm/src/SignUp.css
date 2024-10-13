@@ -8,17 +8,17 @@
     src: url('./fonts/instrument_sans/static/InstrumentSans-SemiBold.ttf');
 }
 
-.signuphalf {
+.signupscreen {
     text-align: center;
     align-content: center;
-    height: 50vh;
-}
-
-.header {
-    font-size: 2.7rem;
-    font-weight: bold;
     position: relative;
     top: 3rem;
+}
+
+.signUpHeader {
+    font-size: 2.7rem;
+    font-weight: bold;  
+    margin-bottom: 2rem;
 }
 
 .signUpInput {
@@ -36,9 +36,12 @@
     border: 2px solid #f5f5f5;
     border-radius: 0.4rem;
     margin: 0.7rem;
-    padding-left: 1rem;
+    padding-left: 1rem; 
+}
+
+.buttonGrid {
     position: relative;
-    top: 5rem;
+    top: 3rem;
 }
 
 .createAccount {
