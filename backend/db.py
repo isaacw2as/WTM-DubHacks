@@ -148,21 +148,21 @@ class DatabaseClient:
   #######################################################
   ### EVENT HELPERS #####################################
   #######################################################
-  def get_largest_eid(self):
+  def get_largest_eid(self) -> int:
     try:
       events_collection = self.db.get_collection("EVENTS")
       res = events_collection.find().sort({"eid": -1}).limit(1)
-      print(res[0])
 
-
-      # if res == None:
-      #   logger.error("DB: No events in DB")
-      #   return 
+      if res == None:
+        logger.error("DB: No events in DB")
+        return 
+      
+      return res[0]['eid']
       
     except Exception as e:
       logger.error(f"Error in finding largest eid: {e}")
     
-    return
+    return 0
       
 
   def register_event_under_user(self, eid, name, loc, datetimestamp, description: dict, associated_interests: list, organizer_username):
@@ -204,4 +204,4 @@ class DatabaseClient:
 
 if __name__ == "__main__":
   d = DatabaseClient()
-  print(d.get_event_info(0))
+  print(d.get_largest_eid())
