@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from gevent.pywsgi import WSGIServer
 from backend.wtm.routes.users import users
 from backend.wtm.routes.login import login
@@ -15,6 +16,8 @@ def register_routes(app, routes):
 
 def create_app():  
     app = Flask(__name__)
+    cors = CORS()
+    cors.init_app(app)
 
     register_routes(app, [users, login, friends, events, upload_files])
 
