@@ -13,7 +13,7 @@ def create_user():
     payload = deserialize_request_body(request)
     username, password, interests = payload["username"], payload["password"], payload["interests"]
     if db_client.user_exists(username):
-        return responses.fail("Username exists. Please try again with a different username.")
+        return responses.fail("Failure: Username exists. Please try again with a different username.")
     db_client.register_new_user(username, password, interests)
     return responses.success()
 
