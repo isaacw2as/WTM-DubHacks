@@ -1,11 +1,32 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
 import '../Login.css';
+import { LOGIN_ENDPOINT } from '../endpoints';
+import axios from "axios"
 
 export default function Login({ setLoggedInUser }) {
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const nav = useNavigate();
+
+  const onChangeUsername = (e) => {
+    setUsername(e.target.value)
+  }
+
+  const onChangePassword = (e) => {
+    setPassword(e.target.value)
+  }
 
   const handleLogin = async () => {
-    
+    if (username && password) {
+      axios.post(LOGIN_ENDPOINT, {username: username, password: password})
+      .then((res) => {
+        setLoggedInUser(username)
+        nav("/feed")
+      }).catch((error) => {
+        console.log("Unable to login")
+      })
+    }
   }
 
   return (
@@ -14,10 +35,10 @@ export default function Login({ setLoggedInUser }) {
         <div className='loginhalf'>
           <div className='header'>Log in</div>
           <div>
-            <input type='text' name='username' placeholder='Username' maxLength={24}/>
+            <input type='text' name='username' placeholder='Username' maxLength={24} onChange={onChangeUsername}/>
           </div>
           <div>
-            <input type='password' name='password' placeholder='Password' maxLength={40}/>
+            <input type='password' name='password' placeholder='Password' maxLength={40} onChange={onChangePassword}/>
           </div>
         </div>
         <div className='loginhalf'>
