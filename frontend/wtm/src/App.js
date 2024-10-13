@@ -35,7 +35,11 @@ function App() {
     },
     {
       path: "/createpost",
-      element: <CreatePost loggedInUser={loggedInUser} />
+      element: loggedInUser !== null ? <CreatePost loggedInUser={loggedInUser} /> : <Navigate to={""}/>
+    },
+    {
+      path: "/event",
+      element: loggedInUser !== null ? <Event loggedInUser={loggedInUser} /> : <Navigate to={""}/>
     },
   ])
 

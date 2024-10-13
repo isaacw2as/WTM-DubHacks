@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from "axios"
 import { DOWNLOAD_ENDPOINT, GET_FEED_ENDPOINT } from "../endpoints"
+import "../Feed.css"
 
 export default function Feed({loggedInUser}) {
   const [feed, setFeed] = useState(null);
@@ -51,8 +52,12 @@ export default function Feed({loggedInUser}) {
     return final
   }
 
+
   return (
     <>
+      <div className={"sidebar"}>
+        <div className={"sidebar-content"}></div>
+      </div>
       {
         isLoading
         ? 

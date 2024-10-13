@@ -22,6 +22,7 @@ export default function Login({ setLoggedInUser }) {
       axios.post(LOGIN_ENDPOINT, {username: username, password: password})
       .then((res) => {
         setLoggedInUser(username)
+        console.log("logged in as" + username)
         nav("/feed")
       }).catch((error) => {
         console.log("Unable to login")
@@ -35,14 +36,14 @@ export default function Login({ setLoggedInUser }) {
         <div className='loginhalf'>
           <div className='header'>Log in</div>
           <div>
-            <input type='text' className='loginInput' name='username' placeholder='Username' maxLength={24}/>
+            <input type='text' className='loginInput' name='username' placeholder='Username' maxLength={24} onChange={onChangeUsername}/>
           </div>
           <div>
-            <input type='password' className='loginInput' name='password' placeholder='Password' maxLength={40}/>
+            <input type='password' className='loginInput' name='password' placeholder='Password' maxLength={40} onChange={onChangePassword}/>
           </div>
         </div>
         <div className='loginhalf'>
-          <button className='loginbutton'>Log In</button>
+          <button className='loginbutton' onClick={handleLogin}>Log In</button>
           <div>Don't have an Account? <Link to='/signup' className='signup'>Sign Up</Link></div>
         </div>
         {/*Make sure I figure out if user signed up but didnt choose interests yet (closed page for example, login takes them to interests) */}

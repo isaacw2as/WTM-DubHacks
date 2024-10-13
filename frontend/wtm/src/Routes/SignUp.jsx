@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../SignUp.css';
 
-export default function SignUp({ }) {
+export default function SignUp({setLoggedInUser}) {
   return (
     <>
       <div>

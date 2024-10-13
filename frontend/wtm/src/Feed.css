@@ -1,0 +1,40 @@
+@font-face {
+    font-family: 'Instrument Sans';
+    src: url('./fonts/instrument_sans/InstrumentSans-VariableFont_wdth,wght.ttf');
+}
+
+@font-face {
+    font-family: 'Instrument Sans Semi Bold';
+    src: url('./fonts/instrument_sans/static/InstrumentSans-SemiBold.ttf');
+}
+
+@font-face {
+    font-family: 'Instrument Sans Bold';
+    src: url('./fonts/instrument_sans/static/InstrumentSans-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'Instrument Sans Medium';
+    src: url('./fonts/instrument_sans/static/InstrumentSans-Medium.ttf');
+}
+
+.sidebar {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    height: 100vh;
+    width: 30%;
+    background-color: red;
+}
+
+.sidebar-content {
+    position:absolute;
+    margin-top: 100px;
+    margin-left: 100px;
+    background-color: blue;
+    height:400px;
+    width: 300px;
+    border-right-width:1px;
+    border-right-color: white;
+    
+}
