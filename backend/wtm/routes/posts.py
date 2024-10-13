@@ -39,7 +39,7 @@ def add_comment():
     success = db_client.add_comment(pid, comment_info)
     if not success:
         return responses.fail()
-    return responses.fail()
+    return responses.success()
     
 @posts.route("/like", methods=["POST"])
 def add_like():
