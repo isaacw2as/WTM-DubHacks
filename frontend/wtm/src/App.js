@@ -24,6 +24,10 @@ function App() {
       path: "/feed",
       element: <Feed loggedInUser={loggedInUser} />
     },
+    {
+      path: "/createevent",
+      element: <CreateEvent loggedInUser={loggedInUser} />
+    },
   ])
 
   return (
