@@ -2,15 +2,13 @@
 name = "backend"
 version = "0.1.0"
 description = ""
-authors = ["Your Name <you@example.com>"]
+authors = ["Isaac Yun, Oleg Ianchenko, Carl Searle, Madelyn Le"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
 pymongo = "^4.10.1"
-flask = "^3.0.3"
-flask-restful = "^0.3.10"
-flask-cors = "^5.0.0"
+Flask = "^3.0.3"
 gevent = "^24.10.2"
 
 
