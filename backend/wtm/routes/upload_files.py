@@ -1,7 +1,7 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, send_file
 from backend.wtm.db import DatabaseClient
 from backend.wtm.util import Responses, deserialize_request_body
-from datetime import datetime
+import random
 
 db_client = DatabaseClient()
 responses = Responses()
@@ -14,15 +14,20 @@ def upload():
     if not file:
         return responses.fail()
     
-    filename = str(datetime.now()) + file.filename
+    filename = str(random.randint(0, 99999999999)) + file.filename
     print(filename)
     with db_client.fs.new_file(filename=filename) as f:
         f.write(file.stream.read())
 
     return responses.success()
 
-@upload_files.route("/download", methods=["POST"])
+@upload_files.route("/download")
 def download():
     filename = request.args.get("filename")
-    print(filename)
-    return responses.success()
+    file = db_client.fs.find_one({"filename": filename})
+    print(file)
+    if file:
+        return file
+    
+    return "file not found"
+
