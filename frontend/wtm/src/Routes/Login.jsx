@@ -6,7 +6,7 @@ export default function Login() {
   return (
     <>
       <div className='background'>
-        <div className='half'>
+        <div className='loginhalf'>
           <div className='header'>Log in</div>
           <div>
             <input type='text' name='username' placeholder='Username' maxLength={24}/>
@@ -15,10 +15,12 @@ export default function Login() {
             <input type='password' name='password' placeholder='Password' maxLength={40}/>
           </div>
         </div>
-        <div className='half'>
+        <div className='loginhalf'>
           <button className='logIn'>Log In</button>
           <div>Don't have an Account? <Link to='/signup' className='login'>Sign Up</Link></div>
         </div>
+        {/*Make sure I figure out if user signed up but didnt choose interests yet (closed page for example, login takes them to interests) */}
+        {/*Make sure button changes color to my choice when hovered, then black when clicked*/}
       </div>
     </>
   )

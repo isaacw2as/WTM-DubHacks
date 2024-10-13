@@ -6,7 +6,7 @@ export default function SignUp({ }) {
   return (
     <>
       <div className='background'>
-        <div className='half'>
+        <div className='signuphalf'>
           <div className='header'>Sign Up</div>
           <div>
             <input type='text' name='username' placeholder='Username' maxLength={24}/>
@@ -15,7 +15,7 @@ export default function SignUp({ }) {
             <input type='password' name='password' placeholder='Password' maxLength={40}/>
           </div>
         </div>
-        <div className='half'>
+        <div className='signuphalf'>
           <button className='createAccount'>Create An Account</button>
           <div>Have an Account? <Link to='/' className='login'>Log In</Link></div>
         </div>

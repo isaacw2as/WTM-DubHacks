@@ -11,10 +11,10 @@
 body {
     font-family: 'Instrument Sans';
     color: #f5f5f5;
+    background-color: #313131;
 }
 
-.half {
-    background-color: #313131;
+.loginhalf {
     text-align: center;
     align-content: center;
     height: 50vh;
