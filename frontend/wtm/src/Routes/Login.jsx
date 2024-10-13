@@ -1,8 +1,34 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
 import '../Login.css';
+import { LOGIN_ENDPOINT } from '../endpoints';
+import axios from "axios"
 
-export default function Login() {
+export default function Login({ setLoggedInUser }) {
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const nav = useNavigate();
+
+  const onChangeUsername = (e) => {
+    setUsername(e.target.value)
+  }
+
+  const onChangePassword = (e) => {
+    setPassword(e.target.value)
+  }
+
+  const handleLogin = async () => {
+    if (username && password) {
+      axios.post(LOGIN_ENDPOINT, {username: username, password: password})
+      .then((res) => {
+        setLoggedInUser(username)
+        nav("/feed")
+      }).catch((error) => {
+        console.log("Unable to login")
+      })
+    }
+  }
+
   return (
     <>
       <div>

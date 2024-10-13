@@ -10,7 +10,7 @@ import CreateEvent from './Routes/CreateEvent';
 
 
 function App() {
-  const [loggedInUser, setLoggedInUser] = useState("IsaacYun");
+  const [loggedInUser, setLoggedInUser] = useState(null);
 
   const router = createBrowserRouter([
     {

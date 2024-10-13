@@ -1,0 +1,62 @@
+{
+    "events":{
+        "/create":{
+            "username": "insert username",
+            "event_name": "insert event name",
+            "location": "location",
+            "timestamp": "date",
+            "description": "siudfhsidufhushdfs",
+            "interests": ["stuff"]
+        },
+        "/show": {
+            "eid": "eid"
+        },
+        "/addPending": {
+            "eid": "eid",
+            "username": "username"
+        }
+    },
+    "feed": {
+        "/get": {
+            "username": "username"
+        }
+    },
+    "friends": {
+        "/add": {
+            "username": "username",
+            "friend_username": "friend_username"
+        }
+    },
+    "/login": {
+        "username": "djfshkfs",
+        "password": "ifhsifushdfoushfushdifu"
+    },
+    "/eventsUpdate": {
+        "username": "jdfhis"
+    },
+    "posts": {
+        "/create": {
+            "username": "fusdhifuhsf",
+            "filename": "kfjsfjsdfo",
+            "eid": "sdufihs"
+        },
+        "/comment": {
+            "pid": "dsjfhs",
+            "username": "dfihs",
+            "comment": "jfhskdsf"
+        },
+        "/like": {
+            "pid": "isduhfs"
+        }
+    },
+    "users": {
+        "/create": {
+            "username": "djfhsf",
+            "password": "dsifuhs",
+            "interests": ["stuff"]
+        },
+        "/friends": {
+            "username": "nsdkjfksf"
+        }
+    }
+}

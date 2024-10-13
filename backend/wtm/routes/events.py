@@ -16,15 +16,13 @@ def create_event():
     username = payload["username"]
     event_name = payload["event_name"]
     location = payload["location"]
-    start_timestamp = payload["start_timestamp"]
-    end_timestamp = payload["end_timestamp"]
+    timestamp = payload["timestamp"]
     description = payload["description"]
     associated_interests = payload["interests"]
     db_client.register_event_under_user(eid=eid,
                                         name=event_name,
                                         loc=location,
-                                        start_timestamp=start_timestamp,
-                                        end_timestamp=end_timestamp,
+                                        timestamp=timestamp,
                                         description=description,
                                         associated_interests=associated_interests,
                                         organizer_username=username,
@@ -46,3 +44,15 @@ def show_event():
         "organizer_username": event_info["organizer_username"]
     }
     return responses.json_data(relevant_info)
+
+@events.route("/addPending", methods=["POST"])
+def add_pending():
+    payload = deserialize_request_body(request)
+    username = payload["username"]
+    eid = payload["eid"]
+    if db_client.is_pending_event(username, eid):
+        return responses.fail(f"User {username} has already shown interest for event {eid}")
+    success = db_client.add_pending_event(username, eid)
+    if not success:
+        return responses.fail()
+    return responses.success()
