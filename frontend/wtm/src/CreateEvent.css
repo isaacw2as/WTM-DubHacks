@@ -8,26 +8,32 @@
     src: url('./fonts/instrument_sans/static/InstrumentSans-SemiBold.ttf');
 }
 
-body {
-    font-family: 'Instrument Sans';
+@font-face {
+    font-family: 'Instrument Sans Bold';
+    src: url('./fonts/instrument_sans/static/InstrumentSans-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'Instrument Sans Medium';
+    src: url('./fonts/instrument_sans/static/InstrumentSans-Medium.ttf');
+}
+
+.eventInput::placeholder {
     color: #f5f5f5;
-    background-color: #313131;
 }
 
-.loginhalf {
-    text-align: center;
-    align-content: center;
-    height: 50vh;
+.centerContent {
+    position: relative;
+    left: 33rem;
+    margin-top: 5rem;
 }
 
-.header {
+.eventHeader {
     font-size: 2.7rem;
     font-weight: bold;
-    position: relative;
-    top: 3rem;
 }
 
-.loginInput {
+.eventInput {
     width: 28rem;
     height: 6.75vh;
     outline: none;
@@ -35,19 +41,17 @@ body {
     border-bottom: none;
     border-left: none;
     border-right: none;
+    border: 2px solid #f5f5f5;
+    border-radius: 0.4rem;
     background: transparent;
     font-size: 1.1rem;
     color: #f5f5f5;
+    
     letter-spacing: 1px;
-    border: 2px solid #f5f5f5;
-    border-radius: 0.4rem;
-    margin: 0.7rem;
     padding-left: 1rem;
-    position: relative;
-    top: 5rem;
 }
 
-.loginbutton {
+.createButton {
     width: 7rem;
     font-size: 1.1rem;
     padding-top: 1rem;
@@ -59,10 +63,4 @@ body {
     border: none;
     background: #94CB7D;
     font-family: 'Instrument Sans Semi Bold';
-    margin-bottom: 1.6rem;
-}
-
-.signup {
-    color: #94CB7D;
-    text-decoration: none;
 }

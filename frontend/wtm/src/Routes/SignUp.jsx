@@ -5,14 +5,14 @@ import '../SignUp.css';
 export default function SignUp({ }) {
   return (
     <>
-      <div className='background'>
+      <div>
         <div className='signuphalf'>
           <div className='header'>Sign Up</div>
           <div>
-            <input type='text' name='username' placeholder='Username' maxLength={24}/>
+            <input type='text' className='signUpInput' name='username' placeholder='Username' maxLength={24}/>
           </div>
           <div>
-            <input type='password' name='password' placeholder='Password' maxLength={40}/>
+            <input type='password' className='signUpInput' name='password' placeholder='Password' maxLength={40}/>
           </div>
         </div>
         <div className='signuphalf'>
