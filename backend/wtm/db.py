@@ -79,6 +79,10 @@ class DatabaseClient:
   def add_friend(self, my_username, friends_username):
     try:
       users_collection = self.db.get_collection("USERS")
+      res = users_collection.find_one({ "username": my_username })
+      if friends_username in res["friends"]:
+        return False
+
       res = users_collection.find_one_and_update({ "username": my_username }, {"$push": {"friends": friends_username}})
 
       logger.info(f"DB: add friend {friends_username=} of user {my_username=}")
@@ -295,4 +299,66 @@ class DatabaseClient:
     return -1
 
 if __name__ == "__main__":
+  # art music gaming nature culture sports fitness travel food
   d = DatabaseClient()
+
+  users = ["CarlSearle", "OlegIanchenko", "IsaacYun", "MadelynLee", "EliBrown", "SamuelVirji", "DominicDollar", "JohnathanSummitSchuster", "ToveLo", "BeltranUK"]
+
+  content = {
+    "Nightmare on Deck": "65585857229c13334-6815-4f5a-8921-8b3b9d4bc939.png",
+    "Cristoph @Q": "11931821image_1721771985764_1ns1etu0h.png",
+    "Kobuta and Ookami": "830126366v12044gd0000cn6ma6nog65radqm7ul0.mov",
+    "Thursday Night Football": "96025325841v12025gd0000cs5cecvog65nodi34v7g.mov",
+    "Dreamland Bar": "89596789258v12044gd0000ci8gsb3c77u2omeun3dg.mov",
+    "CID Block Party": "38973220854v12044gd0000cjegbibc77ucd147vu60.mov",
+    "Day Hike": "74690201846v12044gd0000ckcoufjc77u45k9o6jv0.mov",
+    "Yoga": "92720655045v12044gd0000cp1ucffog65jrk2lak6g.mov",
+    "Boat Party": "46909413613v12044gd0000cpvo5rvog65sjmoosp1g.mov",
+    "Pioneer Square Art Walk": "39839557909v12044gd0000crdqdsvog65ns1ghrrc0.mov",
+    "Together as One": "89019066081v12044gd0000crq6kjvog65mm04tmghg.mov",
+    "Ballard Farmers Market": "49724969767v12044gd0000cs2lm5nog65l75k4upf0.mov",
+    "Boo": "16901042940v12044gd0000cs4ppfnog65gjf2pcqo0.mov",
+    "Inside Passage": "19968106548v12300gd0001cj5ar4rc77ubmnv64au0.mov",
+    "Shakespeare in the Park": "20472420027v15044gf0000cqp50a7og65gnm3ba68g.mov",
+  }
+
+  interests = {
+    "Nightmare on Deck": ["music", "culture"],
+    "Cristoph @Q": ["music", "art"],
+    "Kobuta and Ookami": ["food", "culture", "travel"],
+    "Thursday Night Football": ["gaming", "sports", "fitness"],
+    "Dreamland Bar": ["art", "food", "music"],
+    "CID Block Party": ["music", "culture"],
+    "Day Hike": ["nature", "travel", "fitness"],
+    "Yoga": ["fitness"],
+    "Boat Party": ["music", "culture", "travel"],
+    "Pioneer Square Art Walk": ["art", "culture"],
+    "Together as One": ["music", "nature"],
+    "Ballard Farmers Market": ["travel", "food", "culture"],
+    "Boo": ["music", "gaming", "culture"],
+    "Inside Passage": ["culture", "food", "art"],
+    "Shakespeare in the Park": ["art", "gaming", "nature"],
+  }
+
+  from datetime import datetime, timedelta
+  import random
+
+  for event_name in content:
+    organizer_id = random.choice(users)
+    file_name = content[event_name]
+
+    delta = timedelta(days=random.randint(0, 10), hours=random.randint(0, 5), minutes=random.randint(0, 59), seconds=random.randint(0, 59))
+    now = datetime.now()
+    then = now + delta
+
+    next_eid = d.get_largest_eid() + 1
+
+    d.register_event_under_user(
+      next_eid,
+      event_name,
+      "Seattle, WA",
+      then.strftime("%Y-%m-%dT%H:%M:%S"),
+      "",
+      interests[event_name],
+      organizer_id
+    )
