@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import axios from "axios"
 
-const BACKEND_BASE_URL = "http://localhost:42069/upload_files/upload"
+const BACKEND_BASE_URL = "http://localhost:42069"
 const UPLOAD_ENDPOINT = "/upload_files/upload"
 const DOWNLOAD_ENDPOINT = "/upload_files/download"
 

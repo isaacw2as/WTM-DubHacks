@@ -24,3 +24,5 @@ def upload():
 @upload_files.route("/download", methods=["POST"])
 def download():
     filename = request.args.get("filename")
+    print(filename)
+    return responses.success()
