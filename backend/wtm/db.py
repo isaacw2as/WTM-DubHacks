@@ -285,6 +285,7 @@ class DatabaseClient:
       res = posts_collection.find_one_and_update({"pid": pid}, {"$push": {"comments": comment_info}})
       if res == None:
         logger.warning(f"DB: Adding post to non-existent post: {pid}")
+        return False
       
       return True
     except Exception as e:
@@ -330,6 +331,8 @@ class DatabaseClient:
         logger.warning(f"DB: Pid {pid} does not exist.")
         return None
       
+      del res["_id"]
+
       return res
       
     except Exception as we:

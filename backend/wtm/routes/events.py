@@ -44,3 +44,15 @@ def show_event():
         "organizer_username": event_info["organizer_username"]
     }
     return responses.json_data(relevant_info)
+
+@events.route("/interest", methods=["POST"])
+def show_interest():
+    payload = deserialize_request_body(request)
+    username = payload["username"]
+    eid = payload["eid"]
+    if db_client.is_pending_event(username, eid):
+        return responses.fail(f"User {username} has already shown interest for event {eid}")
+    success = db_client.add_pending_event(username, eid)
+    if not success:
+        return responses.fail()
+    return responses.success()

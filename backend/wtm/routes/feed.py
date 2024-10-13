@@ -25,16 +25,22 @@ def get_feed():
             if friend_pending:
                 friend_eid = random.choice(friend_pending)
                 current_event_info = db_client.get_event_info(friend_eid)
-                pids.append(random.choice(current_event_info["associated_posts"]))
+                to_add = random.choice(current_event_info["associated_posts"])
+                if to_add in pids:
+                    continue
+                pids.append(to_add)
 
-    while len(pids) < 5:
+    while len(pids) < 4:
         event = db_client.get_event_info(latest_eid)
         if not event:
-            latest_eid = 0
+            latest_eid = 1
             continue
 
         if set(user_data["interests"]) & set(event['interests']):
-            pids.append(random.choice(event["associated_posts"]))
+            to_add = random.choice(event["associated_posts"])
+            if to_add in pids:
+                continue
+            pids.append(to_add)
 
         latest_eid += 1
 
@@ -44,5 +50,5 @@ def get_feed():
     # cleanup user state
     db_client.set_latest_eid(username, latest_eid)
 
-    return posts
+    return responses.json_data(posts)
     
