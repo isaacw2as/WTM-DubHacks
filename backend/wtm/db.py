@@ -101,7 +101,7 @@ class DatabaseClient:
     except Exception as e:
       logger.error(f"DB: Get friends list error for: {my_username}")
     
-    return Nones
+    return None
 
   def is_pending_event(self, username, event_id):
     try:
