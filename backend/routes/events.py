@@ -31,4 +31,12 @@ def create_event():
 def show_event():
     eid = request.args.get("eid")
     event_info = db_client.get_event_info(eid)
-    return event_info
+    relevant_info = {
+        "name": event_info["name"],
+        "location": event_info["loc"],
+        "time": event_info["time"],
+        "description": event_info["description"],
+        "associated_posts": event_info["associated_posts"],
+        "organizer_username": event_info["organizer_username"]
+    }
+    return responses.event_data(relevant_info)

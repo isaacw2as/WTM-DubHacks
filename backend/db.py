@@ -194,7 +194,7 @@ class DatabaseClient:
   def get_event_info(self, eid):
     try:
       events_collection = self.db.get_collection("EVENTS")
-      return events_collection.find_one({"eid": eid})
+      return events_collection.find_one({"eid": int(eid)})
       
     except Exception as e:
       logger.error(f"DB: Get event failed: {e}")
