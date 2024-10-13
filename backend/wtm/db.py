@@ -197,7 +197,7 @@ class DatabaseClient:
     return -1
 
   def register_event_under_user(self, eid, name, loc, 
-                                start_timestamp, description: dict, 
+                                timestamp, description: dict, 
                                 associated_interests: list, organizer_username):
     try:
       users_collection = self.db.get_collection("USERS")
@@ -212,8 +212,7 @@ class DatabaseClient:
           "eid": eid,
           "name": name,
           "loc": loc,
-          "start_timestamp": start_timestamp,
-          "end_timestamp": end_timestamp,
+          "timestamp": timestamp,
           "description": description,
           "interests": associated_interests,
           "associated_posts": [],  # new event, no posts under it
