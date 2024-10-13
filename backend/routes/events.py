@@ -5,10 +5,30 @@ from backend.util import Responses, deserialize_request_body
 db_client = DatabaseClient()
 responses = Responses()
 
-event_bp = Blueprint("events", __name__,
+events = Blueprint("events", __name__,
                      url_prefix="/events")
 
-@event_bp.route("/create", methods=["GET"])
+@events.route("/create", methods=["POST"])
 def create_event():
-    db_client.
+    eid = db_client.get_largest_eid() + 1
     payload = deserialize_request_body(request)
+    username = payload["username"]
+    event_name = payload["event_name"]
+    location = payload["location"]
+    datetimestamp = payload["time"]
+    description = payload["description"]
+    associated_interests = payload["associated_interests"]
+    db_client.register_event_under_user(eid=eid,
+                                        name=event_name,
+                                        loc=location,
+                                        datetimestamp=datetimestamp,
+                                        description=description,
+                                        associated_interests=associated_interests,
+                                        organizer_username=username)
+    return responses.success()
+
+@events.route("/show", methods=["GET"])
+def show_event():
+    eid = request.args.get("eid")
+    event_info = db_client.get_event_info(eid)
+    return event_info

@@ -5,11 +5,11 @@ from backend.util import Responses, deserialize_request_body
 db_client = DatabaseClient()
 responses = Responses()
 
-createUser_bp = Blueprint("users", __name__,
+users = Blueprint("users", __name__,
                           url_prefix="/users")
 
-@createUser_bp.route("/createUser", methods=["POST"])
-def createUser():
+@users.route("/create", methods=["POST"])
+def create_user():
     payload = deserialize_request_body(request)
     username, password, interests = payload["username"], payload["password"], payload["interests"]
     if db_client.user_exists(username):
