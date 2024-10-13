@@ -24,12 +24,14 @@ def create_event():
                                         datetimestamp=datetimestamp,
                                         description=description,
                                         associated_interests=associated_interests,
-                                        organizer_username=username)
+                                        organizer_username=username,
+                                        )
     return responses.success()
 
 @events.route("/show", methods=["GET"])
 def show_event():
-    eid = request.args.get("eid")
+    payload = deserialize_request_body(request)
+    eid = payload["eid"]
     event_info = db_client.get_event_info(eid)
     relevant_info = {
         "name": event_info["name"],
@@ -39,4 +41,4 @@ def show_event():
         "associated_posts": event_info["associated_posts"],
         "organizer_username": event_info["organizer_username"]
     }
-    return responses.event_data(relevant_info)
+    return responses.json_data(relevant_info)

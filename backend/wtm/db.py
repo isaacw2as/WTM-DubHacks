@@ -2,6 +2,7 @@ from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 import os
 import logging
+import gridfs
 
 logger = logging.getLogger(__name__)
 class DatabaseClient:
@@ -10,6 +11,7 @@ class DatabaseClient:
     uri = f"mongodb+srv://olegianch:{DB_PASS}@wtm-cluster.bl2wm.mongodb.net/?retryWrites=true&w=majority&appName=wtm-cluster"
     db_client = MongoClient(uri, server_api=ServerApi("1"))
     self.db = db_client.get_database("WTM")
+    self.fs = gridfs.GridFS(self.db)
 
   #######################################################
   ### USER HELPERS ######################################
@@ -65,7 +67,7 @@ class DatabaseClient:
       users_collection = self.db.get_collection("USERS")
       res = users_collection.find_one({"username": my_username})
       if res == None:
-        logger.warning(f"DB: is friend of nonexistant user: {my_username}")
+        logger.warning(f"DB: is friend of non-existent user: {my_username}")
         return False
 
       return friends_username in res['friends']
@@ -83,9 +85,23 @@ class DatabaseClient:
       return res != None
 
     except Exception as e:
-      logger.error(f"DB: Add friend error: {my_username}")
+      logger.error(f"DB: Add friend error for: {my_username}")
     
     return False
+  
+  def get_friends(self, my_username):
+    try:
+      users_collection = self.db.get_collection("USERS")
+      res = users_collection.find_one({"username": my_username})
+      if res == None:
+        logger.warning(f"Non-existent user: {my_username}")
+        return None
+      
+      return res["friends"]
+    except Exception as e:
+      logger.error(f"DB: Get friends list error for: {my_username}")
+    
+    return Nones
 
   def is_pending_event(self, username, event_id):
     try:
@@ -213,12 +229,12 @@ class DatabaseClient:
   #######################################################
   ### POST HELPERS #####################################
   #######################################################
-  def create_post(self, pid, uid, content: dict):
+  def create_post(self, pid, username, content: dict):
     try:
       posts_collection = self.db.get_collection("POSTS")
       posts_collection.insert_one({
         "pid": pid,
-        "uid": uid,
+        "username": username,
         "content": content,
         "n_likes": 0,
         "comments": [],
@@ -231,7 +247,47 @@ class DatabaseClient:
     
     return False
   
+  def add_comment(self, pid, comment_info):
+    try:
+      posts_collection = self.db.get_collection("POSTS")
+      res = posts_collection.find_one_and_update({"pid": pid}, {"$push": {"comments": comment_info}})
+      if res == None:
+        logger.warning(f"DB: Adding post to non-existent post: {pid}")
+      
+      return True
+    except Exception as e:
+      logger.error(f"DB: Add comment failed: {e}")
+    
+    return False
+  
+  def add_like(self, pid):
+    try:
+      posts_collection = self.db.get_collection("POSTS")
+      res = posts_collection.find_one_and_update({"pid": pid}, {"$inc": {"n_likes": 1}})
+      if res == None:
+        logger.warning(f"DB: Adding like to non-existent post: {pid}")
+      
+      return True
+    except Exception as e:
+      logger.error(f"DB: Add like failed: {e}")
+    
+    return False
+  
+  def get_largest_pid(self) -> int:
+    try:
+      events_collection = self.db.get_collection("POSTS")
+      res = events_collection.find().sort({"pid": -1}).limit(1)
+
+      if res == None:
+        logger.error("DB: No events in DB")
+        return 
+      
+      return res[0]['pid']
+      
+    except Exception as e:
+      logger.error(f"Error in finding largest eid: {e}")
+    
+    return 0
 
 if __name__ == "__main__":
   d = DatabaseClient()
-  print(d.create_post("post0", "event0", "username0", {"text": "hello world!"}))
