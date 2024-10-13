@@ -18,3 +18,19 @@
     src: url('./fonts/instrument_sans/static/InstrumentSans-Medium.ttf');
 }
 
+.outer-layout {
+    height:100vh;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.feed-image {
+    width: 500px;
+    height: 900px;
+    object-fit: contain;
+}
+
+.next_video {
+    margin-left: 20px;
+}

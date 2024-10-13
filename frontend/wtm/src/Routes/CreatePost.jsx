@@ -65,14 +65,36 @@ export default function CreatePost({loggedInUser}) {
 
   return (
     <>
-      <input type="file" onChange={handleFileChange}></input>
-      <button onClick={handleUpload}>Upload File</button>
-      <input type="text" onChange={handleDownloadChange} />
-      <button onClick={handleDownload}>Download File</button>
-      {/* <img src={getSrc(toDownload)}></img> */}
-      <video src={getSrc(toDownload)} width="320" height="240" autoPlay loop controls>
-        Your browser does not support the video tag.
-      </video>
+      <div className='eventpage'>
+        <div className='Navbar'>
+
+        </div>
+        <div className='centerContent'>
+          <div className='eventHeader'>Create Your Event</div>
+          <div>
+            <p className='eventParagraph'>Event Name</p>
+            <input type='text' className='eventLongBox' name='username' placeholder='Name of Your Amazing Event ' maxLength={24}/>
+          </div>
+          <div>
+            <p className='eventParagraph'>Time</p>
+            <input type='text' className='eventShortBox' name='day' placeholder='MM/DD/YYYY' maxLength={10}/>
+            <input type='text' className='eventShortBox' name='starttime' placeholder='HH:MM' maxLength={5}/>
+          </div>
+          <div>
+            <p className='eventParagraph'>Location</p>
+            <input type='text' className='eventLongBox' name='location' placeholder='Where is your event happening?' maxLength={30}/>
+          </div>
+          <div>
+            <p className='eventParagraph'>Description</p>
+            <input type='text' className='eventLongBox' name='description' placeholder={`Event description--what's the move?`} maxLength={30}/>
+          </div>
+          <div>
+            <p className='eventParagraph'>Tags</p>
+            <input type='text' className='eventLongBox' name='tags' placeholder='Type in keywords people can use to find your event.' maxLength={30}/>
+          </div>
+          <button className='createButton'>Create</button>
+        </div>
+      </div>
     </>
   )
 }

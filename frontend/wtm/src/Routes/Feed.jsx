@@ -52,26 +52,37 @@ export default function Feed({loggedInUser}) {
     return final
   }
 
+  const get_content = () => {
+    return (
+      <>
+        {
+          isLoading
+          ? 
+          <div>IM LOADING!!!</div>
+          :
+          isVideo 
+          ?
+          <video src={getSrc(feed[0]["filename"])} width="500px" height="900px" autoPlay loop controls>
+            Your browser does not support the video tag.
+          </video>
+          :
+          <img src={getSrc(feed[0]["filename"])} className={"feed-image"}></img>
+        }
+      </>
+    )
+  }
+
 
   return (
     <>
-      <div className={"sidebar"}>
-        <div className={"sidebar-content"}></div>
+      <div className="outer-layout">
+        <div className="content">
+          {get_content()}
+        </div>
+        <div className="next_video">
+          <button onClick={handleNext}>Next Post!</button>
+        </div>
       </div>
-      {
-        isLoading
-        ? 
-        <div>IM LOADING!!!</div>
-        :
-        isVideo 
-        ?
-        <video src={getSrc(feed[0]["filename"])} width="320" height="240" autoPlay loop controls>
-          Your browser does not support the video tag.
-        </video>
-        :
-        <img src={getSrc(feed[0]["filename"])}></img>
-      }
-      <button onClick={handleNext}>go next!</button>
     </>
   )
 }
