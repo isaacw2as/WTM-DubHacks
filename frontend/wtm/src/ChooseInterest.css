@@ -31,7 +31,7 @@
 }
 
 .interestbutton {
-    position: relative;
+    position: static;
     bottom: 3rem;
     width: 9rem;
     font-size: 1.1rem;
@@ -48,6 +48,27 @@
     color: #f5f5f5;
     font-family: 'Instrument Sans Semi Bold';
     margin-bottom: 1.6rem;
+}
+
+.interestbutton-selected {
+    position: static;
+    bottom: 3rem;
+    width: 9rem;
+    font-size: 1.1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-left: 0.7rem;
+    margin-right: 0.7rem;
+    border-radius: 2rem;
+    outline: none;
+    border: none;
+    background: #f5f5f5;
+    color: #686868;
+    font-family: 'Instrument Sans Semi Bold';
+    margin-bottom: 1.6rem;
+
 }
 
 
