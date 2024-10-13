@@ -11,8 +11,7 @@ feed = Blueprint("feed", __name__,
 
 @feed.route("/get", methods=["GET"])
 def get_feed():
-    payload = deserialize_request_body(request)
-    username = payload["username"]
+    username = request.args.get("username")
     user_data = db_client.get_user_info(username)
     latest_eid = user_data["latestEid"]
     user_friends = user_data["friends"]
@@ -39,6 +38,7 @@ def get_feed():
         if set(user_data["interests"]) & set(event['interests']):
             to_add = random.choice(event["associated_posts"])
             if to_add in pids:
+                latest_eid += 1
                 continue
             pids.append(to_add)
 
@@ -46,6 +46,7 @@ def get_feed():
 
     # convert pids to posts
     posts = list(map(lambda pid: db_client.get_post_info(pid), pids))
+    random.shuffle(posts)
 
     # cleanup user state
     db_client.set_latest_eid(username, latest_eid)

@@ -1,32 +1,55 @@
 import React, { useState, useEffect } from 'react'
 import axios from "axios"
-import { GET_FEED_ENDPOINT } from "../endpoints"
+import { DOWNLOAD_ENDPOINT, GET_FEED_ENDPOINT } from "../endpoints"
 
 export default function Feed({loggedInUser}) {
   const [feed, setFeed] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isVideo, setIsVideo] = useState(null)
-  const [currentContent, setCurrentContent] = useState(null)
 
-  const fetchFeed = async () => {
-    const result = await axios.get(GET_FEED_ENDPOINT, { params: { loggedInUser: loggedInUser } })
-    console.log(result)
-    return result
+  const initFetchFeed = async () => {
+    const result = await axios.get(GET_FEED_ENDPOINT, { params: { username: loggedInUser } })
+    const new_feed = result.data
+
+    console.log(new_feed)
+
+    setIsVideo(new_feed[0]["filename"].endsWith(".mov"))
+    setFeed(new_feed)
+    setIsLoading(false)
+  }
+
+  const updateFetchFeed = async () => {
+    const result = await axios.get(GET_FEED_ENDPOINT, { params: { username: loggedInUser } })
+    const additional_feed = result.data
+
+    console.log(feed.concat(additional_feed))
+    setFeed(feed.concat(additional_feed))
   }
 
   useEffect(() => {
     console.log("Hitting endpoint")
-    const initFeed = fetchFeed()
-    setFeed(initFeed)
-    setIsLoading(false)
+    initFetchFeed()
   }, [])
 
   useEffect(() => {
-    if (feed.length() <= 1) {
-      const additionalFeed = fetchFeed()
+    if (feed && feed.length <= 1) {
+      const additionalFeed = updateFetchFeed()
       setFeed(feed.concat(additionalFeed))
     }
   }, [feed])
+
+  const handleNext = () => {
+    const newFeed = feed.slice(1)
+    console.log(newFeed)
+    setIsVideo(newFeed[0]["filename"].endsWith(".mov"))
+    setFeed(newFeed)
+  }
+
+  const getSrc = (filename) => {
+    const final = DOWNLOAD_ENDPOINT + "?filename=" + filename
+    console.log(final)
+    return final
+  }
 
   return (
     <>
@@ -35,16 +58,15 @@ export default function Feed({loggedInUser}) {
         ? 
         <div>IM LOADING!!!</div>
         :
-        
         isVideo 
         ?
-        <video src={getSrc(toDownload)} width="320" height="240" autoPlay loop controls>
+        <video src={getSrc(feed[0]["filename"])} width="320" height="240" autoPlay loop controls>
           Your browser does not support the video tag.
         </video>
         :
-        <img src={getSrc(toDownload)}></img>
+        <img src={getSrc(feed[0]["filename"])}></img>
       }
-      <button>go next!</button>
+      <button onClick={handleNext}>go next!</button>
     </>
   )
 }

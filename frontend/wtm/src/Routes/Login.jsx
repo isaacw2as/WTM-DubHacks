@@ -2,7 +2,12 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 import '../Login.css';
 
-export default function Login() {
+export default function Login({ setLoggedInUser }) {
+
+  const handleLogin = async () => {
+    
+  }
+
   return (
     <>
       <div className='background'>
@@ -16,7 +21,7 @@ export default function Login() {
           </div>
         </div>
         <div className='loginhalf'>
-          <button className='logIn'>Log In</button>
+          <button className='logIn' onClick={handleLogin}>Log In</button>
           <div>Don't have an Account? <Link to='/signup' className='login'>Sign Up</Link></div>
         </div>
         {/*Make sure I figure out if user signed up but didnt choose interests yet (closed page for example, login takes them to interests) */}
