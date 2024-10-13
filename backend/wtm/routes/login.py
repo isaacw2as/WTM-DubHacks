@@ -12,7 +12,6 @@ def login_user():
     payload = deserialize_request_body(request)
     username, password= payload["username"], payload["password"]
     success = db_client.login(username, password)
-    if success:
-        return responses.success()
-    else: 
+    if not success:
         return responses.fail()
+    return responses.success()
