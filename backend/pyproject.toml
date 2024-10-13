@@ -2,7 +2,7 @@
 name = "backend"
 version = "0.1.0"
 description = ""
-authors = ["Isaac Yun <isaac.yun@spectrumeffect.com>"]
+authors = ["Isaac Yun, Oleg Ianchenko, Carl Searle, Madelyn Le"]
 readme = "README.md"
 
 [tool.poetry.dependencies]

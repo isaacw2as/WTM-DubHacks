@@ -1,8 +1,8 @@
 from flask import Flask
-from backend.routes.users import users
-from backend.routes.login import login
-from backend.routes.friends import friends
-from backend.routes.events import events
+from backend.wtm.routes.users import users
+from backend.wtm.routes.login import login
+from backend.wtm.routes.friends import friends
+from backend.wtm.routes.events import events
 
 def register_routes(app, routes):
     for route in routes:

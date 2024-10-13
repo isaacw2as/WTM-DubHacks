@@ -1,5 +1,5 @@
 from gevent.pywsgi import WSGIServer
-from backend.app import create_app
+from backend.wtm.app import create_app
 
 URL = "0.0.0.0"
 PORT = 42069

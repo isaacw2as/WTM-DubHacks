@@ -1,6 +1,6 @@
 from flask import Blueprint, request
-from backend.db import DatabaseClient
-from backend.util import Responses
+from backend.wtm.db import DatabaseClient
+from backend.wtm.util import Responses
 
 db_client = DatabaseClient()
 responses = Responses()
