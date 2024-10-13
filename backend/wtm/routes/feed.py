@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 from backend.wtm.db import DatabaseClient
 from backend.wtm.util import Responses, deserialize_request_body
+from datetime import datetime
 import random
 
 db_client = DatabaseClient()
@@ -33,6 +34,10 @@ def get_feed():
         event = db_client.get_event_info(latest_eid)
         if not event:
             latest_eid = 1
+            continue
+
+        if datetime.now() > datetime.strptime(event["timestamp"], "%Y-%m-%dT%H:%M:%S"):
+            latest_eid += 1
             continue
 
         if set(user_data["interests"]) & set(event['interests']):
