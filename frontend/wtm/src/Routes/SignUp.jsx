@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { CREATE_USER_ENDPOINT } from '../endpoints';
 import '../SignUp.css';
+import axios from "axios"
 
 export default function SignUp({setLoggedInUser}) {
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
   const [selectedInterests, setSelectedInterests] = useState([]);
+  const nav = useNavigate()
 
   const onChangeUsername = (e) => {
     setUsername(e.target.value)
@@ -159,10 +162,16 @@ export default function SignUp({setLoggedInUser}) {
     setSelectedInterests(newInterests)
   }
 
-  const submitSignUp = (e) => {
-    console.log(username)
-    console.log(password)
-    console.log(selectedInterests)
+  const submitSignUp = async (e) => {
+    if (username && password && selectedInterests.length > 0) {
+      axios.post(CREATE_USER_ENDPOINT, { username: username, password: password, interests: selectedInterests})
+      .then(() => {
+        setLoggedInUser(username)
+        nav("/feed")
+      }).catch((error) => {
+        console.log("Unable to create user")
+      })
+    }
   }
 
   return (
