@@ -2,6 +2,7 @@ from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 import os
 import logging
+import gridfs
 
 logger = logging.getLogger(__name__)
 class DatabaseClient:
@@ -10,6 +11,7 @@ class DatabaseClient:
     uri = f"mongodb+srv://olegianch:{DB_PASS}@wtm-cluster.bl2wm.mongodb.net/?retryWrites=true&w=majority&appName=wtm-cluster"
     db_client = MongoClient(uri, server_api=ServerApi("1"))
     self.db = db_client.get_database("WTM")
+    self.fs = gridfs.GridFS(self.db)
 
   #######################################################
   ### USER HELPERS ######################################
