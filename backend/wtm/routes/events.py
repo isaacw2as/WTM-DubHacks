@@ -45,8 +45,8 @@ def show_event():
     }
     return responses.json_data(relevant_info)
 
-@events.route("/interest", methods=["POST"])
-def show_interest():
+@events.route("/addPending", methods=["POST"])
+def add_pending():
     payload = deserialize_request_body(request)
     username = payload["username"]
     eid = payload["eid"]

@@ -16,7 +16,7 @@ def login_user():
     success = db_client.login(username, password)
     if not success:
         return responses.fail()
-    return responses.success()
+    return responses.json_data({"username": username})
 
 @login.route("/eventsUpdate", methods=["POST"])
 def check_pending_events():
