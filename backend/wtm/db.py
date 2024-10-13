@@ -213,12 +213,11 @@ class DatabaseClient:
   #######################################################
   ### POST HELPERS #####################################
   #######################################################
-  def create_post(self, pid, eid, uid, content: dict):
+  def create_post(self, pid, uid, content: dict):
     try:
       posts_collection = self.db.get_collection("POSTS")
       posts_collection.insert_one({
         "pid": pid,
-        "eid": eid,
         "uid": uid,
         "content": content,
         "n_likes": 0,
