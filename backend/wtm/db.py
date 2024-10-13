@@ -141,6 +141,7 @@ class DatabaseClient:
     
     except Exception as e:
       logger.error(f"DB: Set latest eid error: {username=}, {latest_eid=}")
+
     return False
 
   def move_pending_event(self, username, event_id):
@@ -166,6 +167,8 @@ class DatabaseClient:
     try:
       users_collection = self.db.get_collection("USERS")
       res = users_collection.find_one({ "username": username })
+      if res == None:
+        logger.warning(f"DB: Username {username} does not exist.")
       return res
 
     except Exception as e:
@@ -194,8 +197,8 @@ class DatabaseClient:
     return -1
 
   def register_event_under_user(self, eid, name, loc, 
-                                start_timestamp, end_timestamp, 
-                                description: dict, associated_interests: list, organizer_username):
+                                start_timestamp, description: dict, 
+                                associated_interests: list, organizer_username):
     try:
       users_collection = self.db.get_collection("USERS")
       res = users_collection.find_one_and_update({"username": organizer_username}, {"$push": {"pendingEids": eid}})
@@ -225,7 +228,12 @@ class DatabaseClient:
   def get_event_info(self, eid):
     try:
       events_collection = self.db.get_collection("EVENTS")
-      return events_collection.find_one({"eid": int(eid)})
+      res = events_collection.find_one({"eid": int(eid)})
+      if res == None:
+        logger.warning(f"DB: Event with eid {eid} does not exist.")
+        return None
+      
+      return res
       
     except Exception as e:
       logger.error(f"DB: Get event failed: {e}")
@@ -238,20 +246,25 @@ class DatabaseClient:
       res = users_collection.find_one_and_update({"eid": eid}, {"$push": {"associated_posts": pid}})
       if res == None:
         logger.warning(f"Associating post with unknown eid {eid}")
-        return
+        return False
+      
+      return True
+    
     except Exception as e:
-      logger.error(f"DB: Associate post {pid} with event {eid}: {e} ")
+      logger.error(f"DB: Error associate post {pid} with event {eid}: {e} ")
+    
+    return False
     
   #######################################################
   ### POST HELPERS #####################################
   #######################################################
-  def create_post(self, pid, username, content: dict):
+  def create_post(self, pid, username, filename: str):
     try:
       posts_collection = self.db.get_collection("POSTS")
       posts_collection.insert_one({
         "pid": pid,
         "username": username,
-        "content": content,
+        "filename": filename,
         "n_likes": 0,
         "comments": [],
       })
@@ -291,8 +304,8 @@ class DatabaseClient:
   
   def get_largest_pid(self) -> int:
     try:
-      events_collection = self.db.get_collection("POSTS")
-      res = events_collection.find().sort({"pid": -1}).limit(1)
+      posts_collection = self.db.get_collection("POSTS")
+      res = posts_collection.find().sort({"pid": -1}).limit(1)
       res = res.to_list()
 
       if not res:
@@ -302,9 +315,25 @@ class DatabaseClient:
       return res[0]['pid']
       
     except Exception as e:
-      logger.error(f"Error in finding largest eid: {e}")
+      logger.error(f"DB: Error in finding largest pid: {e}")
     
     return -1
+  
+  def get_post_info(self, pid):
+    try:
+      post_collection = self.db.get_collection("POSTS")
+      res = post_collection.find_one({"pid": pid})
+      if res is None:
+        logger.warning(f"DB: Pid {pid} does not exist.")
+        return None
+      
+      return res
+      
+    except Exception as we:
+      logger.error(f"DB: Error in getting post info: {pid=}")
+      
+    return None
+      
 
 if __name__ == "__main__":
   d = DatabaseClient()

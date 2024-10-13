@@ -27,7 +27,7 @@ def get_feed():
                 current_event_info = db_client.get_event_info(friend_eid)
                 pids.append(random.choice(current_event_info["associated_posts"]))
 
-    while len(pids) < 10:
+    while len(pids) < 5:
         event = db_client.get_event_info(latest_eid)
         if not event:
             latest_eid = 0
@@ -38,7 +38,6 @@ def get_feed():
 
         latest_eid += 1
 
-    print(pids)
     # convert pids to posts
     posts = list(map(lambda pid: db_client.get_post_info(pid), pids))
 

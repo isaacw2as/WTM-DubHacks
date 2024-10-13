@@ -17,14 +17,12 @@ def create_event():
     event_name = payload["event_name"]
     location = payload["location"]
     start_timestamp = payload["start_timestamp"]
-    end_timestamp = payload["end_timestamp"]
     description = payload["description"]
     associated_interests = payload["interests"]
     db_client.register_event_under_user(eid=eid,
                                         name=event_name,
                                         loc=location,
                                         start_timestamp=start_timestamp,
-                                        end_timestamp=end_timestamp,
                                         description=description,
                                         associated_interests=associated_interests,
                                         organizer_username=username,
