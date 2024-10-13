@@ -16,7 +16,7 @@ def get_feed():
     user_data = db_client.get_user_info(username)
     latest_eid = user_data["latestEid"]
     user_friends = user_data["friends"]
-    posts = []
+    pids = []
     if user_friends:
         for i in range(3):
             friend = random.choice(user_friends)
@@ -25,5 +25,25 @@ def get_feed():
             if friend_pending:
                 friend_eid = random.choice(friend_pending)
                 current_event_info = db_client.get_event_info(friend_eid)
-                posts.append(random.choice(current_event_info["associated_posts"]))
-    while len(posts) < 10:
+                pids.append(random.choice(current_event_info["associated_posts"]))
+
+    while len(pids) < 10:
+        event = db_client.get_event_info(latest_eid)
+        if not event:
+            latest_eid = 0
+            continue
+
+        if set(user_data["interests"]) & set(event['interests']):
+            pids.append(random.choice(event["associated_posts"]))
+
+        latest_eid += 1
+
+    print(pids)
+    # convert pids to posts
+    posts = list(map(lambda pid: db_client.get_post_info(pid), pids))
+
+    # cleanup user state
+    db_client.set_latest_eid(username, latest_eid)
+
+    return posts
+    
