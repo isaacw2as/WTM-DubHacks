@@ -11,6 +11,9 @@ class DatabaseClient:
     db_client = MongoClient(uri, server_api=ServerApi("1"))
     self.db = db_client.get_database("WTM")
 
+  #######################################################
+  ### USER HELPERS ######################################
+  #######################################################
   def user_exists(self, username):
     try:
       user_collection = self.db.get_collection("USERS")
@@ -130,9 +133,75 @@ class DatabaseClient:
       logger.error(f"DB: move pending event error: {e}")
     
     return False
+
+  def get_user_info(self, username):
+    try:
+      users_collection = self.db.get_collection("USERS")
+      res = users_collection.find_one({ "username": username })
+      return res
+
+    except Exception as e:
+      logger.error(f"DB: Error getting user {username}")
     
+    return None
+
+  #######################################################
+  ### EVENT HELPERS #####################################
+  #######################################################
+  def get_largest_eid(self) -> int:
+    try:
+      events_collection = self.db.get_collection("EVENTS")
+      res = events_collection.find().sort({"eid": -1}).limit(1)
+
+      if res == None:
+        logger.error("DB: No events in DB")
+        return 
+      
+      return res[0]['eid']
+      
+    except Exception as e:
+      logger.error(f"Error in finding largest eid: {e}")
     
+    return 0
+      
+
+  def register_event_under_user(self, eid, name, loc, datetimestamp, description: dict, associated_interests: list, organizer_username):
+    try:
+      users_collection = self.db.get_collection("USERS")
+      res = users_collection.find_one_and_update({"username": organizer_username}, {"$push": {"pendingEids": eid}})
+      if res == None:
+        logger.warning(f"Registered event to unknown user {organizer_username}")
+        return
+      
+      events_collection = self.db.get_collection("EVENTS")
+      res = events_collection.insert_one(
+        {
+          "eid": eid,
+          "name": name,
+          "loc": loc,
+          "time": datetimestamp,
+          "description": description,
+          "interests": associated_interests,
+          "associated_posts": [],  # new event, no posts under it
+          "organizer_username": organizer_username,
+        }
+      )
+      logger.info(f"DB: registered new event {name} under {organizer_username}")
+      
+    except Exception as e:
+      logger.error(f"DB: Event register: {e}")
+    
+  def get_event_info(self, eid):
+    try:
+      events_collection = self.db.get_collection("EVENTS")
+      return events_collection.find_one({"eid": eid})
+      
+    except Exception as e:
+      logger.error(f"DB: Get event failed: {e}")
+    
+    return None
+  
 
 if __name__ == "__main__":
   d = DatabaseClient()
-  print(d.move_pending_event("username0", "event0"))
+  print(d.get_largest_eid())
