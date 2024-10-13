@@ -163,7 +163,6 @@ class DatabaseClient:
       logger.error(f"Error in finding largest eid: {e}")
     
     return 0
-      
 
   def register_event_under_user(self, eid, name, loc, datetimestamp, description: dict, associated_interests: list, organizer_username):
     try:
@@ -194,14 +193,46 @@ class DatabaseClient:
   def get_event_info(self, eid):
     try:
       events_collection = self.db.get_collection("EVENTS")
-      return events_collection.find_one({"eid": eid})
+      return events_collection.find_one({"eid": int(eid)})
       
     except Exception as e:
       logger.error(f"DB: Get event failed: {e}")
     
     return None
   
+  def associate_post_with_event(self, pid, eid):
+    try:
+      users_collection = self.db.get_collection("EVENTS")
+      res = users_collection.find_one_and_update({"eid": eid}, {"$push": {"associated_posts": pid}})
+      if res == None:
+        logger.warning(f"Associating post with unknown eid {eid}")
+        return
+    except Exception as e:
+      logger.error(f"DB: Associate post {pid} with event {eid}: {e} ")
+    
+  #######################################################
+  ### POST HELPERS #####################################
+  #######################################################
+  def create_post(self, pid, eid, uid, content: dict):
+    try:
+      posts_collection = self.db.get_collection("POSTS")
+      posts_collection.insert_one({
+        "pid": pid,
+        "eid": eid,
+        "uid": uid,
+        "content": content,
+        "n_likes": 0,
+        "comments": [],
+      })
+
+      return True
+      
+    except Exception as e:
+      logger.error(f"DB: Get event failed: {e}")
+    
+    return False
+  
 
 if __name__ == "__main__":
   d = DatabaseClient()
-  print(d.get_largest_eid())
+  print(d.create_post("post0", "event0", "username0", {"text": "hello world!"}))
