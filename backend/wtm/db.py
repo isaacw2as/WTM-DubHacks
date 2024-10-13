@@ -127,8 +127,20 @@ class DatabaseClient:
       return res != None
 
     except Exception as e:
-      logger.error(f"DB: Add pending event error: {username=}, {event_id}=")
+      logger.error(f"DB: Add pending event error: {username=}, {event_id=}")
     
+    return False
+  
+  def set_latest_eid(self, username, latest_eid):
+    try:
+      users_collection = self.db.get_collection("USERS")
+      res = users_collection.find_one_and_update({"username": username}, {"$set": {"latestEid": latest_eid}})
+      logger.info(f"DB: set user {username} latest eid to: {latest_eid}")
+
+      return res != None
+    
+    except Exception as e:
+      logger.error(f"DB: Set latest eid error: {username=}, {latest_eid=}")
     return False
 
   def move_pending_event(self, username, event_id):
