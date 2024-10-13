@@ -5,7 +5,8 @@ from backend.util import Responses
 db_client = DatabaseClient()
 responses = Responses()
 
-login_bp = Blueprint("login", __name__)
+feed_bp = Blueprint("feed", __name__,
+                    url_prefix="/feed")
 
-@login_bp.route("/login", methods=["GET"])
-def login(username: str, password: str):
+@feed_bp.route("/feed", methods=["GET"])
+def feed():

@@ -1,11 +1,14 @@
 from flask import Blueprint, request
 from backend.db import DatabaseClient
-from backend.util import Responses
+from backend.util import Responses, deserialize_request_body
 
 db_client = DatabaseClient()
 responses = Responses()
 
-login_bp = Blueprint("login", __name__)
+event_bp = Blueprint("events", __name__,
+                     url_prefix="/events")
 
-@login_bp.route("/login", methods=["GET"])
-def login(username: str, password: str):
+@event_bp.route("/create", methods=["GET"])
+def create_event():
+    db_client.
+    payload = deserialize_request_body(request)
