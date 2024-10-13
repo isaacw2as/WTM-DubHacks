@@ -16,3 +16,15 @@ def create_user():
         return responses.fail("Username exists. Please try again with a different username.")
     db_client.register_new_user(username, password, interests)
     return responses.success()
+
+@users.route("/friends", methods=["GET"])
+def get_friends_list():
+    payload = deserialize_request_body(request)
+    username = payload["username"]
+    friends_list = db_client.get_friends(username)
+    if friends_list is None: friends_list = []
+    friends_dict = {
+        "username": username,
+        "friends": friends_list
+    }
+    return responses.json_data(friends_dict)

@@ -48,7 +48,7 @@ export default function CreatePost({loggedInUser}) {
     console.log(toDownload)
 
     try {
-      const response = axios.post(BACKEND_BASE_URL + DOWNLOAD_ENDPOINT, {filename: toDownload})
+      const response = await axios.post(BACKEND_BASE_URL + DOWNLOAD_ENDPOINT, {filename: toDownload})
       console.log(response)
 
     } catch (error) {
@@ -57,16 +57,22 @@ export default function CreatePost({loggedInUser}) {
     }
   }
 
+  const getSrc = (filename) => {
+    const final = BACKEND_BASE_URL + DOWNLOAD_ENDPOINT + "?filename=" + filename
+    console.log(final)
+    return final
+  }
+
   return (
     <>
       <input type="file" onChange={handleFileChange}></input>
       <button onClick={handleUpload}>Upload File</button>
       <input type="text" onChange={handleDownloadChange} />
       <button onClick={handleDownload}>Download File</button>
-      {
-        downloadedFile ? 
-        <image src={downloadedFile}></image> : <></>
-      }
+      {/* <img src={getSrc(toDownload)}></img> */}
+      <video src={getSrc(toDownload)} width="320" height="240" autoPlay loop controls>
+        Your browser does not support the video tag.
+      </video>
     </>
   )
 }

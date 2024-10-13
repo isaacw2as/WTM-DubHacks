@@ -10,7 +10,7 @@ import CreateEvent from './Routes/CreateEvent';
 
 
 function App() {
-  const [loggedInUser, setLoggedInUser] = useState("");
+  const [loggedInUser, setLoggedInUser] = useState("IsaacYun");
 
   const router = createBrowserRouter([
     {
@@ -27,11 +27,11 @@ function App() {
     },
     {
       path: "/feed",
-      element: <Feed loggedInUser={loggedInUser} />
+      element: loggedInUser !== null ? <Feed loggedInUser={loggedInUser} /> : <Navigate to={"/"} />
     },
     {
       path: "/createevent",
-      element: <CreateEvent loggedInUser={loggedInUser} />
+      element: loggedInUser !== null ? <CreateEvent loggedInUser={loggedInUser} /> : <Navigate to={"/"} />
     },
     {
       path: "/createpost",
