@@ -17,8 +17,7 @@ def register_routes(app, routes):
 
 def create_app():  
     app = Flask(__name__)
-    cors = CORS()
-    cors.init_app(app)
+    CORS(app)
 
     register_routes(app, [users, login, friends, events, upload_files, healthz_bp])
 
