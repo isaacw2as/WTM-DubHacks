@@ -383,22 +383,33 @@ if __name__ == "__main__":
   from datetime import datetime, timedelta
   import random
 
-  for event_name in content:
-    organizer_id = random.choice(users)
-    file_name = content[event_name]
+  # for i, event_name in enumerate(content):
+  #   # organizer_id = random.choice(users)
+  #   # file_name = content[event_name]
 
-    delta = timedelta(days=random.randint(0, 10), hours=random.randint(0, 5), minutes=random.randint(0, 59), seconds=random.randint(0, 59))
-    now = datetime.now()
-    then = now + delta
+  #   # delta = timedelta(days=random.randint(0, 10), hours=random.randint(0, 5), minutes=random.randint(0, 59), seconds=random.randint(0, 59))
+  #   # now = datetime.now()
+  #   # then = now + delta
 
-    next_eid = d.get_largest_eid() + 1
+  #   # next_eid = d.get_largest_eid() + 1
 
-    d.register_event_under_user(
-      next_eid,
-      event_name,
-      "Seattle, WA",
-      then.strftime("%Y-%m-%dT%H:%M:%S"),
-      "",
-      interests[event_name],
-      organizer_id
-    )
+  #   # d.register_event_under_user(
+  #   #   next_eid,
+  #   #   event_name,
+  #   #   "Seattle, WA",
+  #   #   then.strftime("%Y-%m-%dT%H:%M:%S"),
+  #   #   "",
+  #   #   interests[event_name],
+  #   #   organizer_id
+  #   # )
+
+  #   events = d.db.get_collection("EVENTS")
+  #   event = events.find_one({"name": event_name})
+
+  #   posts = d.db.get_collection("POSTS")
+  #   post = posts.find_one({"filename": content[event_name]})
+
+  #   d.associate_post_with_event(post["pid"], event["eid"])
+
+  for user in users:
+    d.set_latest_eid(user, 1)
