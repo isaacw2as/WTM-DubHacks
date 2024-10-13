@@ -27,7 +27,9 @@ def check_pending_events():
     for eid in pending_eids:
         event_info = db_client.get_event_info(eid)
         event_time = datetime.strptime(event_info["timestamp"], "%Y-%m-%dT%H:%M:%S")
-        current_time = datetime.now(tz=timezone("US/Pacific"))
+        pacific_tz = timezone("US/Pacific")
+        event_time = pacific_tz.localize(event_time)
+        current_time = datetime.now(tz=pacific_tz)
         if current_time > event_time:
             success = db_client.move_pending_event(username, eid)
             if not success:
