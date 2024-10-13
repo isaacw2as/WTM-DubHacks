@@ -30,7 +30,8 @@ def create_event():
 
 @events.route("/show", methods=["GET"])
 def show_event():
-    eid = request.args.get("eid")
+    payload = deserialize_request_body(request)
+    eid = payload["eid"]
     event_info = db_client.get_event_info(eid)
     relevant_info = {
         "name": event_info["name"],
